@@ -1,0 +1,40 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend for budgetify application",
+  "main": "index.js",
+  "scripts": {
+    "init": "node ./src/database/install_db.js",
+    "start": "node ./src/index.js",
+    "debug": "nodemon --nolazy --inspect-brk=9543 ./src/index.js",
+    "debugInit": "nodemon --nolazy --inspect-brk=9543 ./src/database/install_db.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsmaelB83/budgetify.git"
+  },
+  "keywords": [
+    "Budget",
+    "react",
+    "node",
+    "express",
+    "mongodb",
+    "SAP"
+  ],
+  "author": "Ismael Bernal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IsmaelB83/budgetify/issues"
+  },
+  "homepage": "https://github.com/IsmaelB83/budgetify#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.2",
+    "read-excel-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
