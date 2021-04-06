@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const express = require('express');
 const bodyParser = require('body-parser');
 // Own imports
-const { PartidaRoutes } = require('./routes');
+const { PartidaRoutes, ActualRoutes, CommitmentRoutes, ForecastRoutes } = require('./routes');
 const { ErrorMiddleware, AuthMiddleware } = require('./middlewares');
 const database = require('./database');
 
@@ -30,6 +30,9 @@ database.connect(process.env.MONGODB_URL)
         app.use(bodyParser.urlencoded({extended: true}));
         // Routes API version
         app.use('/api/partida', PartidaRoutes());
+        app.use('/api/actual', ActualRoutes());
+        app.use('/api/commitment', CommitmentRoutes());
+        app.use('/api/forecast', ForecastRoutes());
         app.get('/favicon.ico', (req, res) => res.status(204));
         app.use(AuthMiddleware, (req, res, next) => next({status: 404, description: 'Not found'}));
         // error handler

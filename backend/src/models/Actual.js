@@ -54,6 +54,52 @@ const ActualSchema = new Schema(
 );
 
 /**
+* Función estática para listar partidas presupuestarias de la base de datos
+* @param {String} tagetik Para filtrado por una partida tagetik concreta
+* @param {String} SAPObject Para filtrado de partidas asociadas aun objeto SAP concreto
+* @param {String} gjahr Ejercicio para el filtrado
+* @param {String} perio Periodo para el filtrado
+*/
+ActualSchema.statics.list = (tagetik, SAPObject, gjahr, perio) => {
+    return new Promise((resolve, reject) => {
+        // Genero filtrado
+        let filter = {}
+        if (tagetik) filter.tagetik = { '$regex': tagetik, '$options': 'i' };
+        if (SAPObject) filter.SAPObject = { '$regex': SAPObject, '$options': 'i' };
+        // Realizo la query a Mongo
+        let queryDB = Actual.find(filter);
+        queryDB.exec()
+        .then(results => resolve({results}))
+        .catch(error => reject(error));
+    });
+}
+
+/**
+* Función estática para actualizar los datos de una partida de costes reales
+* @param {String} id ID que representa a un coste real en MongoDB
+* @param {Partida} newActual Objeto con los datos a modificar
+*/
+ActualSchema.statics.updateActual = async function(id, newActual) {
+    try {
+        // Busco algún coste real con ese id
+        let actual = await Actual.findById(id);
+        if (actual) {
+            actual.sgtxt = newActual.sgtxt || actual.sgtxt;
+            actual.ebtxt = newActual.ebtxt || actual.ebtxt;
+            actual.bltxt = newActual.bltxt || actual.bltxt;
+            actual.solicitante = newActual.solicitante || actual.solicitante;
+            actual.tagetik = newActual.tagetik || actual.tagetik;
+            actual.SAPObject = newActual.SAPObject || actual.SAPObject;
+            // Salvo datos en mongo
+            return actual.save();
+        }
+        return false;
+    } catch (error) {
+        return error;
+    }
+};
+
+/**
 * Función estática para eliminar todas las lineas de costes reales
 */
 ActualSchema.statics.deleteAll = async function() {
@@ -61,7 +107,7 @@ ActualSchema.statics.deleteAll = async function() {
 };
 
 /**
-* Función estática para insertar varios lineas de costes reales al mismo tiempo
+* Función estática para insertar varias lineas de comprometidos al mismo tiempo
 */
 ActualSchema.statics.insertAll = async function(actuals) {
     return await Actual.insertMany(actuals);

@@ -46,6 +46,50 @@ const CommitmentSchema = new Schema(
 );
 
 /**
+* Función estática para listar partidas de comprometido de la base de datos
+* @param {String} tagetik Para filtrado por una partida tagetik concreta
+* @param {String} SAPObject Para filtrado de partidas asociadas aun objeto SAP concreto
+* @param {String} gjahr Ejercicio para el filtrado
+* @param {String} perio Periodo para el filtrado
+*/
+CommitmentSchema.statics.list = (tagetik, SAPObject, gjahr, perio) => {
+    return new Promise((resolve, reject) => {
+        // Genero filtrado
+        let filter = {}
+        if (tagetik) filter.tagetik = { '$regex': tagetik, '$options': 'i' };
+        if (SAPObject) filter.SAPObject = { '$regex': SAPObject, '$options': 'i' };
+        // Realizo la query a Mongo
+        let queryDB = Commitment.find(filter);
+        queryDB.exec()
+        .then (results => resolve({results}))
+        .catch(error => reject(error));
+    });
+}
+
+/**
+* Función estática para actualizar los datos de una partida de comprometido
+* @param {String} id ID que representa a un comprometido en MongoDB
+* @param {Partida} newCommitment Objeto con los datos a modificar
+*/
+CommitmentSchema.statics.updateCommitment = async function(id, newCommitment) {
+    try {
+        // Busco algún comprometido con ese id
+        let commitment = await Commitment.findById(id);
+        if (commitment) {
+            commitment.sgtxt = newCommitment.sgtxt || commitment.sgtxt;
+            commitment.solicitante = newCommitment.solicitante || commitment.solicitante;
+            commitment.tagetik = newCommitment.tagetik || commitment.tagetik;
+            commitment.SAPObject = newCommitment.SAPObject || commitment.SAPObject;
+            // Salvo datos en mongo
+            return commitment.save();
+        }
+        return false;
+    } catch (error) {
+        return error;
+    }
+};
+
+/**
 * Función estática para eliminar todas las lineas de costes reales
 */
 CommitmentSchema.statics.deleteAll = async function() {

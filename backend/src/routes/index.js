@@ -2,7 +2,7 @@
 
 module.exports = {
     PartidaRoutes: require('./Partida'),
-    /*ActualRoutes: require('./Actual'),
+    ActualRoutes: require('./Actual'),
     CommitmentRoutes: require('./Commitment'),
-    ForecastRoutes: require('./Forecast'),*/
+    ForecastRoutes: require('./Forecast'),
 }
