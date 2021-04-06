@@ -1,17 +1,22 @@
-const express = require('express');
+'use strict';
+// Node imports
+const https = require('https');
+const fs = require('fs');
 
-
+// Load env variables
 require('dotenv').config();
 
-const app = express();
+// Create server application and start server
+const app = require('./app');
 
-app.get('/', (req,  res) => {
-    res.json(404, {
-      status: 200,
-      result: 'Hola Mundo'  
-    });
-});
+// Prepare https credentials
+const credentials = {
+    key: fs.readFileSync(process.env.HTTPS_KEY, 'utf8'),
+    cert: fs.readFileSync(process.env.HTTPS_CERT, 'utf8')
+};
 
-app.listen(3000, () => {  
-  console.log('Server running on port 3000...')
+// Start https server
+const appServer = https.createServer(credentials, app);
+appServer.listen(process.env.PORT, () => {
+    console.log(`OK - HTTPS API server running on port ${process.env.PORT}`);
 });

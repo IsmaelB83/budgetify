@@ -98,12 +98,13 @@ PartidaSchema.statics.updatePartida = async function(id, newPartida) {
         let partida = await Partida.findById(id);
         if (partida) {
             // Si viene el parametro en el body lo sobreescribo
-            partida.description = newPartida.description || partida.description;
+            partida.responsible = newPartida.responsible || partida.responsible;
             partida.tagetik = newPartida.tagetik || partida.tagetik;
+            partida.description = newPartida.description || partida.description;
+            partida.department = newPartida.department || partida.department;
+            partida.type = newPartida.type || partida.type;
             partida.SAPType = newPartida.SAPType || partida.SAPType;
             partida.SAPObject = newPartida.SAPObject || partida.SAPObject;
-            partida.SAPDescription = newPartida.SAPDescription || partida.SAPDescription;
-            partida.department = newPartida.department || partida.department;
             partida.budget = newPartida.budget || partida.budget;
             // Salvo datos en mongo
             return partida.save();
