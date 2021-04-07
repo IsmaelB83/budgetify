@@ -38,6 +38,10 @@ const CommitmentSchema = new Schema(
         solicitante: { type: String, max: 100 },
         // Partida Tagetik
         tagetik: { type: String, max: 10 },
+        // La partida ha sido cargada y validada (corregida, etc.)
+        checked: { type: Boolean, default: false },
+        // Ingorar una partida de comprometido
+        ignore: { type: Boolean, default: false }
     },
     {
         // Añade las propiedades de created y updated
@@ -80,6 +84,8 @@ CommitmentSchema.statics.updateCommitment = async function(id, newCommitment) {
             commitment.solicitante = newCommitment.solicitante || commitment.solicitante;
             commitment.tagetik = newCommitment.tagetik || commitment.tagetik;
             commitment.SAPObject = newCommitment.SAPObject || commitment.SAPObject;
+            commitment.checked = newCommitment.checked || commitment.checked;
+            commitment.ignore = newCommitment.ignore || commitment.ignore;
             // Salvo datos en mongo
             return commitment.save();
         }

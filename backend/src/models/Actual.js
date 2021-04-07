@@ -46,6 +46,10 @@ const ActualSchema = new Schema(
         tagetik: { type: String, max: 10 },
         // CO Document Number
         belnr: { type: String, max: 10},
+        // La partida ha sido cargada y validada (corregida, etc.)
+        checked: { type: Boolean, default: false },
+        // Ingorar una partida de costes reales
+        ignore: { type: Boolean, default: false }
     },
     {
         // Añade las propiedades de created y updated
@@ -90,6 +94,8 @@ ActualSchema.statics.updateActual = async function(id, newActual) {
             actual.solicitante = newActual.solicitante || actual.solicitante;
             actual.tagetik = newActual.tagetik || actual.tagetik;
             actual.SAPObject = newActual.SAPObject || actual.SAPObject;
+            actual.checked = newActual.checked || actual.checked;
+            actual.ignore = newActual.ignore || actual.ignore;
             // Salvo datos en mongo
             return actual.save();
         }

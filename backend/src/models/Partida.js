@@ -106,6 +106,8 @@ PartidaSchema.statics.updatePartida = async function(id, newPartida) {
             partida.SAPType = newPartida.SAPType || partida.SAPType;
             partida.SAPObject = newPartida.SAPObject || partida.SAPObject;
             partida.budget = newPartida.budget || partida.budget;
+            partida.checked = newPartida.checked || partida.checked;
+            partida.ignore = newPartida.ignore || partida.ignore;
             // Salvo datos en mongo
             return partida.save();
         }

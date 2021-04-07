@@ -35,6 +35,8 @@ const ForecastSchema = new Schema(
         sgtxt: { type: String, max: 255 },
         // Unidad solicitante
         solicitante: { type: String, max: 100 },
+        // Ingorar una partida de forecast
+        ignore: { type: Boolean, default: false }
     },
     {
         // Añade las propiedades de created y updated
@@ -89,6 +91,7 @@ ForecastSchema.statics.updateForecast = async function(id, newForecast) {
             forecast.amount12 = newForecast.amount12 || forecast.amount12;
             forecast.sgtxt = newForecast.sgtxt || forecast.sgtxt;
             forecast.solicitante = newForecast.solicitante || forecast.solicitante;
+            forecast.ignore = newForecast.ignore || forecast.ignore;
             // Salvo datos en mongo
             return forecast.save();
         }

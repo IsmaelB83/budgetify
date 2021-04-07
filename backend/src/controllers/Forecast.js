@@ -77,7 +77,7 @@ module.exports = {
                 // Update forecast model
                 const updated = {...forecast, ...req.body}
                 // Update mongo
-                Forecast.updateforecast(forecast._id, updated).then(result => {
+                Forecast.updateForecast(forecast._id, updated).then(result => {
                     // Ok
                     res.status(200).json({
                         success: true, 
