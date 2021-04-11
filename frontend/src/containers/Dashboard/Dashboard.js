@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -18,10 +18,11 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './listItems';
-import Chart from './Chart';
-import Deposits from './Deposits';
-import Orders from './Orders';
+import { mainListItems, secondaryListItems } from '../../components/SideMenu';
+import Chart from '../../components/Chart';
+import Deposits from '../../components/Deposits';
+import Orders from '../../components/Orders';
+import PartidaServices from '../../services/PartidaServices';
 
 function Copyright() {
   return (
@@ -128,6 +129,22 @@ export default function Dashboard() {
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
+    const [partidas, setPartidas] = useState([]);
+
+    // On load
+    useEffect(() => {        
+        console.log('test');
+        PartidaServices.getPartidas()
+        .then(result => {
+            console.log(result);
+            setPartidas(result.partidas);
+        })
+        .catch (error => {
+            console.log(`Error loading adverts ERROR: ${error}`)
+        });
+    }, []);
+
+  // Render
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -188,7 +205,7 @@ export default function Dashboard() {
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
-                <Orders />
+                <Orders partidas={partidas}/>
               </Paper>
             </Grid>
           </Grid>

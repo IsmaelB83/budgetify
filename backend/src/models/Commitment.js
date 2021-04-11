@@ -41,7 +41,9 @@ const CommitmentSchema = new Schema(
         // La partida ha sido cargada y validada (corregida, etc.)
         checked: { type: Boolean, default: false },
         // Ingorar una partida de comprometido
-        ignore: { type: Boolean, default: false }
+        ignore: { type: Boolean, default: false },
+        // Fecha carga
+        loaded: { type: Date, required: true }
     },
     {
         // Añade las propiedades de created y updated

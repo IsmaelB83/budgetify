@@ -1,6 +1,7 @@
 'use strict';
 // Node imports
-const https = require('https');
+//const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 // Load env variables
@@ -16,7 +17,8 @@ const credentials = {
 };
 
 // Start https server
-const appServer = https.createServer(credentials, app);
+//const appServer = https.createServer(credentials, app);
+const appServer = http.createServer(app);
 appServer.listen(process.env.PORT, () => {
-    console.log(`OK - HTTPS API server running on port ${process.env.PORT}`);
+    console.log(`OK - API server running on port ${process.env.PORT}`);
 });
